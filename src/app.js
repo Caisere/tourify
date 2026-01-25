@@ -9,10 +9,11 @@ const PORT = 8080
 const toursData = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours.json`, 'utf-8'))
 
 
-app.get('/', (req, res) => {
+app.get('/api/v1/tours', (req, res) => {
     // console.log(toursData)
     res.status(200).json({
         message: 'success',
+        count: toursData.length,
         data: {
             tours: toursData
         }
