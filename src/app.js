@@ -1,9 +1,10 @@
 const express = require('express')
 const fs = require('fs')
+const { get } = require('http')
 
 const app = express()
 
-// middleware
+//1.  MIDDLEWARE
 app.use(express.json())
 
 const PORT = 8080
@@ -12,8 +13,11 @@ const PORT = 8080
 const toursData = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours.json`, 'utf-8'))
 
 
-// GET
-app.get('/api/v1/tours', (req, res) => {
+
+// 2. ROUTE HANDLERS
+
+// get all tours
+const getAllTours = (req, res) => {
     res.status(200).json({
         message: 'success',
         count: toursData.length,
@@ -21,10 +25,10 @@ app.get('/api/v1/tours', (req, res) => {
             tours: toursData
         }
     })
-})
+}
 
-//GET (individual tour by Id) 
-app.get('/api/v1/tours/:id', (req, res) => {
+// Get individual tour by Id
+const getTourById = (req, res) => {
     const id = req.params.id;
     console.log(id)
 
@@ -43,10 +47,10 @@ app.get('/api/v1/tours/:id', (req, res) => {
         message: 'success',
         data: tour
     })
-})
+}
 
-// POST
-app.post('/api/v1/tours', (req, res) => {
+// create Tour
+const createTour = (req, res) => {
     const newId = toursData.length + 1;
 
     console.log(newId)
@@ -70,10 +74,10 @@ app.post('/api/v1/tours', (req, res) => {
             tour: newTour
         }
     })
-})
+}
 
-// PATCH   
-app.patch('/api/v1/tours/:id', (req, res) => {
+// update tour
+const updateTour = (req, res) => {
     const id = req.params.id;
     console.log(id)
 
@@ -90,11 +94,10 @@ app.patch('/api/v1/tours/:id', (req, res) => {
         message: 'success',
         data: 'Updated tour here...'
     })
-})
+}
 
-
-// DELETE
-app.delete('/api/v1/tours/:id', (req, res) => {
+// delete tour
+const deleteTour = (req, res) => {
     const id = req.params.id;
     console.log(id)
 
@@ -110,10 +113,29 @@ app.delete('/api/v1/tours/:id', (req, res) => {
     res.status(204).json({
         message: 'success',
     })
-})
+}
+
+
+// 3. ROUTES
+
+// GET
+app.get('/api/v1/tours', getAllTours)
+
+//GET (individual tour by Id) 
+app.get('/api/v1/tours/:id', getTourById)
+
+// POST
+app.post('/api/v1/tours', createTour)
+
+// PATCH   
+app.patch('/api/v1/tours/:id', updateTour)
+
+// DELETE
+app.delete('/api/v1/tours/:id', deleteTour)
 
 
 
+// 4. START SERVER
 app.listen(PORT, () => {
     console.log(`Tourify server started at port ${PORT}`)
 })
