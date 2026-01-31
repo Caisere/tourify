@@ -2,11 +2,16 @@ const express = require('express')
 const fs = require('fs')
 const { get } = require('http')
 
+
+//  initialize express app
 const app = express()
 
 //1.  MIDDLEWARE
 app.use(express.json())
 
+
+
+// Port
 const PORT = 8080
 
 // fine to read using sync format. top level code run before event loop starts
@@ -143,7 +148,7 @@ app.route('/api/v1/tours/:id')
     .delete(deleteTour)
     
 
-    
+
 // 4. START SERVER
 app.listen(PORT, () => {
     console.log(`Tourify server started at port ${PORT}`)
