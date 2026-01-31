@@ -1,13 +1,28 @@
 const express = require('express')
 const fs = require('fs')
-const { get } = require('http')
+const morgan = require('morgan')
+
 
 
 //  initialize express app
 const app = express()
 
-//1.  MIDDLEWARE
+//1.  MIDDLEWARES
+
+// morgan middleware for logging
+app.use(morgan('dev'))
+
 app.use(express.json())
+
+app.use((req, res, next) => {
+    console.log('Hello from the middleware 👋')
+    next()
+})
+
+app.use((req, res, next) => {
+    req.requestTime = new Date().toISOString()
+    next()
+})
 
 
 
@@ -26,6 +41,7 @@ const getAllTours = (req, res) => {
     res.status(200).json({
         message: 'success',
         count: toursData.length,
+        requestedAt: req.requestTime,
         data: {
             tours: toursData
         }
@@ -50,6 +66,7 @@ const getTourById = (req, res) => {
 
     res.status(200).json({
         message: 'success',
+        requestedAt: req.requestTime,
         data: tour
     })
 }
