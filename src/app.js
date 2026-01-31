@@ -23,6 +23,28 @@ app.get('/api/v1/tours', (req, res) => {
     })
 })
 
+//GET (individual tour by Id) 
+app.get('/api/v1/tours/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+
+    const tour = toursData.find(el => el.id === parseInt(id))
+
+
+    // if (id > toursData.length) {
+    if (!tour) {
+        return res.status(404).json({
+            message: 'fail',
+            error: 'Invalid tour ID'
+        })
+    }
+
+    res.status(200).json({
+        message: 'success',
+        data: tour
+    })
+})
+
 // POST
 app.post('/api/v1/tours', (req, res) => {
     const newId = toursData.length + 1;
@@ -49,6 +71,48 @@ app.post('/api/v1/tours', (req, res) => {
         }
     })
 })
+
+// PATCH   
+app.patch('/api/v1/tours/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+
+
+    if (id > toursData.length) {
+    // if (!tour) {
+        return res.status(404).json({
+            message: 'fail',
+            error: 'Invalid tour ID'
+        })
+    }
+
+    res.status(200).json({
+        message: 'success',
+        data: 'Updated tour here...'
+    })
+})
+
+
+// DELETE
+app.delete('/api/v1/tours/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+
+
+    if (id > toursData.length) {
+    // if (!tour) {
+        return res.status(404).json({
+            message: 'fail',
+            error: 'Invalid tour ID'
+        })
+    }
+
+    res.status(204).json({
+        message: 'success',
+    })
+})
+
+
 
 app.listen(PORT, () => {
     console.log(`Tourify server started at port ${PORT}`)
