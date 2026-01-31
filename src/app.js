@@ -118,23 +118,32 @@ const deleteTour = (req, res) => {
 
 // 3. ROUTES
 
-// GET
-app.get('/api/v1/tours', getAllTours)
+// // GET
+// app.get('/api/v1/tours', getAllTours)
 
-//GET (individual tour by Id) 
-app.get('/api/v1/tours/:id', getTourById)
+// //GET (individual tour by Id) 
+// app.get('/api/v1/tours/:id', getTourById)
 
-// POST
-app.post('/api/v1/tours', createTour)
+// // POST
+// app.post('/api/v1/tours', createTour)
 
-// PATCH   
-app.patch('/api/v1/tours/:id', updateTour)
+// // PATCH   
+// app.patch('/api/v1/tours/:id', updateTour)
 
-// DELETE
-app.delete('/api/v1/tours/:id', deleteTour)
+// // DELETE
+// app.delete('/api/v1/tours/:id', deleteTour)
 
+app.route('/api/v1/tours')
+    .get(getAllTours)
+    .post(createTour)
 
+app.route('/api/v1/tours/:id')
+    .get(getTourById)
+    .patch(updateTour)
+    .delete(deleteTour)
+    
 
+    
 // 4. START SERVER
 app.listen(PORT, () => {
     console.log(`Tourify server started at port ${PORT}`)
