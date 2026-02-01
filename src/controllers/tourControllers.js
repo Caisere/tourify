@@ -4,6 +4,22 @@ const fs = require('fs')
 // fine to read using sync format. top level code run before event loop starts
 const toursData = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours.json`, 'utf-8'))
 
+// middleware function to check ID validity
+exports.checkID = (req, res, next, val) => {
+
+    console.log(`Tour ID is: ${val}`)
+
+    if (val > toursData.length) {
+    // if (!tour) {
+        return res.status(404).json({
+            message: 'fail',
+            error: 'Invalid tour ID'
+        })
+    }
+
+    next()
+}
+
 
 // get all tours
 exports.getAllTours = (req, res) => {
@@ -20,18 +36,8 @@ exports.getAllTours = (req, res) => {
 // Get individual tour by Id
 exports.getTourById = (req, res) => {
     const id = req.params.id;
-    console.log(id)
 
     const tour = toursData.find(el => el.id === parseInt(id))
-
-
-    // if (id > toursData.length) {
-    if (!tour) {
-        return res.status(404).json({
-            message: 'fail',
-            error: 'Invalid tour ID'
-        })
-    }
 
     res.status(200).json({
         message: 'success',
@@ -43,14 +49,12 @@ exports.getTourById = (req, res) => {
 // create Tour
 exports.createTour = (req, res) => {
     const newId = toursData.length + 1;
-
-    console.log(newId)
     
     const newTour = Object.assign({id: newId}, req.body)
 
     toursData.push(newTour)
 
-    fs.writeFile(`${__dirname}/dev-data/data/tours.json`, JSON.stringify(toursData), err => {
+    fs.writeFile(`${__dirname}/../dev-data/data/tours.json`, JSON.stringify(toursData), err => {
 
         if (err) {
             res.status(400).json({
@@ -70,16 +74,6 @@ exports.createTour = (req, res) => {
 // update tour
 exports.updateTour = (req, res) => {
     const id = req.params.id;
-    console.log(id)
-
-
-    if (id > toursData.length) {
-    // if (!tour) {
-        return res.status(404).json({
-            message: 'fail',
-            error: 'Invalid tour ID'
-        })
-    }
 
     res.status(200).json({
         message: 'success',
@@ -90,16 +84,6 @@ exports.updateTour = (req, res) => {
 // delete tour
 exports.deleteTour = (req, res) => {
     const id = req.params.id;
-    console.log(id)
-
-
-    if (id > toursData.length) {
-    // if (!tour) {
-        return res.status(404).json({
-            message: 'fail',
-            error: 'Invalid tour ID'
-        })
-    }
 
     res.status(204).json({
         message: 'success',
