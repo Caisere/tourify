@@ -2,18 +2,20 @@
 const express = require('express');
 
 // Import controller functions
-const {getAllTours, getTourById, createTour, updateTour, deleteTour, checkID} = require('../controllers/tourControllers');
+const {getAllTours, getTourById, createTour, updateTour, deleteTour, checkID, checkBody} = require('../controllers/tourControllers');
 
 const router = express.Router()
 
 // Middleware to check ID validity
 router.param('id', checkID)
 
+
+
 // Route definitions
 router
     .route('/')
     .get(getAllTours)
-    .post(createTour)
+    .post(checkBody, createTour)
 
 router
     .route('/:id')
