@@ -1,3 +1,5 @@
+const User = require('../models/userModel')
+
 // get all users
 exports.getAllUsers = (req, res) => {
     res.status(200).json({
@@ -20,14 +22,22 @@ exports.getUserById = (req, res) => {
 }
 
 // create User
-exports.createUser = (req, res) => {
+exports.createUser = async (req, res) => {
+    try {
+        const newUser = await User.create(req.body)
 
-    res.status(201).json({
-        status: 'success',
-        data: {
-            tour: 'This Route data is not available yet'
-        }
-    })
+        res.status(201).json({
+            status: 'success',
+            data: {
+                user: newUser
+            }
+        })
+    } catch(err) {
+        return res.status(400).json({
+            status: 'fail',
+            message: err.message
+        })
+    }
 }
 
 // update User
