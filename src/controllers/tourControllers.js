@@ -3,18 +3,46 @@ const Tour = require('../models/tourModel')
 
 
 // get all tours
-exports.getAllTours = (req, res) => {
+exports.getAllTours = async (req, res) => {
+    try {
+        const tours = await Tour.find()
 
-    res.status(200).json({
-        message: 'success',
-    })
+        res.status(200).json({
+            message: 'success',
+            data: {
+                allTours: tours
+            }
+        })
+    } catch (error) {
+        return res.status(400).json({
+            status: 'fail',
+            message: error.message
+        })
+    }
+
 }
 
 // Get individual tour by Id
-exports.getTourById = (req, res) => {
-    res.status(200).json({
-        message: 'success',
-    })
+exports.getTourById = async (req, res) => {
+    try {
+        // get tour id from the request parameters
+        const id = req.params.id;
+
+        const tour = await Tour.findById(id)
+
+        res.status(200).json({
+            message: 'success',
+            data: {
+                tour
+            }
+        })
+        
+    } catch (error) {
+        return res.status(400).json({
+            status: 'fail',
+            message: error.message
+        })
+    }
 }
 
 // create Tour
@@ -41,20 +69,35 @@ exports.createTour =  async (req, res) => {
 }
 
 // update tour
-exports.updateTour = (req, res) => {
-    const id = req.params.id;
-
-    res.status(200).json({
-        message: 'success',
-        data: 'Updated tour here...'
-    })
+exports.updateTour = async (req, res) => {
+    try {        
+        const id = req.params.id;
+    
+        res.status(200).json({
+            message: 'success',
+            data: 'Updated tour here...'
+        })
+    } catch (error) {
+        return res.status(400).json({
+            status: 'fail',
+            message: error.message
+        })
+    }
 }
 
 // delete tour
-exports.deleteTour = (req, res) => {
-    const id = req.params.id;
-
-    res.status(204).json({
-        message: 'success',
-    })
+exports.deleteTour = async (req, res) => {
+    try {
+        const id = req.params.id;
+    
+        res.status(204).json({
+            message: 'success',
+        })
+        
+    } catch (error) {
+        return res.status(400).json({
+            status: 'fail',
+            message: error.message
+        })
+    }
 }
