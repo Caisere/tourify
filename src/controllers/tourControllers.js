@@ -36,7 +36,7 @@ exports.getTourById = async (req, res) => {
                 tour
             }
         })
-        
+
     } catch (error) {
         return res.status(400).json({
             status: 'fail',
@@ -72,10 +72,17 @@ exports.createTour =  async (req, res) => {
 exports.updateTour = async (req, res) => {
     try {        
         const id = req.params.id;
+
+        const tour = await Tour.findByIdAndUpdate(id, req.body, {
+            new: true, // return the updated document instead of the original document
+            runValidators: true // run the validators defined in the tour schema before updating the document. this ensures that the data being updated is valid according to the schema rules.
+        })
     
         res.status(200).json({
             message: 'success',
-            data: 'Updated tour here...'
+            data: {
+                tour
+            }
         })
     } catch (error) {
         return res.status(400).json({
@@ -90,8 +97,10 @@ exports.deleteTour = async (req, res) => {
     try {
         const id = req.params.id;
     
+        await Tour.findByIdAndDelete(id)
+        
         res.status(204).json({
-            message: 'success',
+            message: 'success'
         })
         
     } catch (error) {
