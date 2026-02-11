@@ -1,24 +1,40 @@
 const User = require('../models/userModel')
 
+
 // get all users
-exports.getAllUsers = (req, res) => {
-    res.status(200).json({
-        message: 'success',
-        requestedAt: req.requestTime,
-        data: 'This Route data is not available yet'
-    })
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find()
+
+        res.status(200).json({
+            message: 'success',
+            requestedAt: req.requestTime,
+            data: {
+                users
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 // Get individual user by Id
-exports.getUserById = (req, res) => {
-    const id = req.params.id;
+exports.getUserById = async (req, res) => {
+    try {
+        const id = req.params.id;
 
+        const user = await User.findById(id)
 
-    res.status(200).json({
-        message: 'success',
-        requestedAt: req.requestTime,
-        data: 'This Route data is not available yet'
-    })
+        res.status(200).json({
+            message: 'success',
+            requestedAt: req.requestTime,
+            data: {
+                user
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 // create User

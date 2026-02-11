@@ -41,6 +41,8 @@ const seedData = async () => {
     } catch (error) {
         console.log(error)
     }
+
+    process.emit()
 }
 
 if (process.argv[2] === '--seed') {
@@ -51,3 +53,5 @@ if (process.argv[2] === '--seed') {
 
 
 console.log(process.argv)
+
+

@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'A user must have a name'],
+        trim: true
     },
     email: {
         type: String,
@@ -23,7 +24,8 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user',
     }
-})
+}, {timestamps: true}
+)
 
 const User = mongoose.model('User', userSchema)
 

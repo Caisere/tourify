@@ -5,6 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon server.js",
+    "db:clear": "node ./src/dev-data/seed.js --clear",
+    "db:seed": "node ./src/dev-data/seed.js --seed",
     "prod": "NODE_ENV=production nodemon server.js"
   },
   "author": "caisere",
