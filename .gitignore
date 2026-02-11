@@ -3,3 +3,5 @@ node_modules
 
 config.env
 src/unused
+
+/src/dev-data/data/dev-user.json 
