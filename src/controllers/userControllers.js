@@ -13,8 +13,13 @@ exports.getAllUsers = async (req, res) => {
                 users
             }
         })
+        
     } catch (error) {
         console.log(error)
+        return res.status(400).json({
+            status: 'fail',
+            message: error.message
+        })
     }
 }
 
@@ -32,8 +37,13 @@ exports.getUserById = async (req, res) => {
                 user
             }
         })
+
     } catch (error) {
         console.log(error)
+        return res.status(400).json({
+            status: 'fail',
+            message: error.message
+        })
     }
 }
 
@@ -48,6 +58,7 @@ exports.createUser = async (req, res) => {
                 user: newUser
             }
         })
+
     } catch(err) {
         return res.status(400).json({
             status: 'fail',
@@ -57,21 +68,47 @@ exports.createUser = async (req, res) => {
 }
 
 // update User
-exports.updateUser = (req, res) => {
-    const id = req.params.id;
+exports.updateUser = async (req, res) => {
+    try {
+        const id = req.params.id;
 
-    res.status(200).json({
-        message: 'success',
-        data: 'This Route data is not available yet'
-    })
+        const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+            runValidators: true,
+            new: true
+        })
+
+        res.status(200).json({
+            message: 'success',
+            data: {
+                updatedUser
+            }
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({
+            status: 'fail',
+            message: error.message
+        })
+    }
 }
 
 // delete User
-exports.deleteUser = (req, res) => {
-    const id = req.params.id;
+exports.deleteUser = async (req, res) => {
+    try {
+        const id = req.params.id;
 
+        const user = await User.findByIdAndDelete(id)
 
-    res.status(204).json({
-        message: 'success',
-    })
+        res.status(204).json({
+            message: 'success',
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({
+            status: 'fail',
+            message: error.message
+        })
+    }
 }
